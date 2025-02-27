@@ -8,7 +8,10 @@ def emo_detector():
     #Get the parameter sent by the request
     my_text_to_analize = request.args.get('textToAnalyze')
     my_analysis = emotion_detector(my_text_to_analize)
-    #Extract each value from Dictionary in a variable
+    #if no text introduced
+    if my_analysis["dominant_emotion"] is None:
+        return "Invalid text! Please try again!."
+    # Otherwise Extract each value from Dictionary in a variable    
     reply = "For the given statement, the system response is 'anger': {}, 'disgust': {}, 'fear': {}, \
     'joy': {} and 'sadness': {}. The dominant emotion is <b>{}</b>.".format(my_analysis['anger'],\
     my_analysis['disgust'],my_analysis['fear'],my_analysis['joy'],my_analysis['sadness'],\

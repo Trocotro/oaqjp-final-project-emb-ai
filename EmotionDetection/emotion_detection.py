@@ -5,9 +5,12 @@ def emotion_detector(text_to_analyze):
     inputjson = { "raw_document": { "text": text_to_analyze } }
     response = requests.post(url, json = inputjson, headers = header)
     formated_response = json.loads(response.text)
-    
-    #Get the emotions list
-    emotions = formated_response['emotionPredictions'][0]['emotion']
-    #we add the dominant emotion with value equal to the emotion with higher value
-    emotions['dominant_emotion']= max(emotions,key=emotions.get)
-    return emotions
+    if response.status_code == 200:
+        #Get the emotions list
+        emotions = formated_response['emotionPredictions'][0]['emotion']
+        #we add the dominant emotion with value equal to the emotion with higher value
+        emotions['dominant_emotion']= max(emotions,key=emotions.get)
+        return emotions
+    elif response.status_code == 400:
+        empty_response = {"anger" : None, "disgust" : None, "fear" : None, "joy" : None, "sadness" : None, "dominant_emotion" : None} 
+        return empty_response       
